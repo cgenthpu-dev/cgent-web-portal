@@ -1,5 +1,23 @@
 {
+  "name": "cgent-portal",
+  "version": "1.0.0",
+  "description": "C-GENT Web Portal",
+  "homepage": "https://github.com/cgenthpu-dev/cgent-web-portal#readme",
+  "bugs": {
+    "url": "https://github.com/cgenthpu-dev/cgent-web-portal/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgenthpu-dev/cgent-web-portal.git"
+  },
+  "license": "ISC",
+  "author": "Ayush Sood",
   "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
@@ -9,5 +27,6 @@
     "mailgen": "^2.0.32",
     "mongoose": "^8.20.0",
     "nodemailer": "^7.0.10"
-  }
+  },
+  "devDependencies": {}
 }
