@@ -2,6 +2,7 @@ import app from "./src/utils/express.utils.js";
 import connectDB from "./src/database/database.js";
 import cors from "cors";
 import dotenv from "dotenv";
+import authRouter from "./src/routes/auth.route.js";
 
 dotenv.config({
   path: "./.env",
@@ -16,9 +17,7 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("Homepage");
-});
+app.use("/api/v1/auth", authRouter);
 
 connectDB()
   .then(function () {

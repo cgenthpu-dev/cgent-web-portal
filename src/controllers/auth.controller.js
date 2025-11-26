@@ -4,9 +4,9 @@ import {
   emailVerificationContent,
   forgotPasswordEmailContent,
 } from "../utils/mail.utils.js";
-import asyncHandler from "express-async-handler";
-import ApiError from "../utils/apiError.js";
-import ApiResponse from "../utils/apiResponse.js";
+import asyncHandler from "../utils/asyncHandler.utils.js";
+import ApiError from "../utils/apiError.utils.js";
+import ApiResponse from "../utils/apiResponse.utils.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -43,15 +43,15 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
   });
 
-  const { unhasedToken, hashedToken, tokenExpiry } =
-    user.createTemporaryToken();
+  const { unhashedToken, hashedToken, tokenExpiry } =
+    await user.createTemporaryToken();
   user.emailVerificationToken = hashedToken;
   user.emailVerificationTokenExpiry = tokenExpiry;
   await user.save();
 
   const verificationLink = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/verify-email/${unhasedToken}/${user?.email}`;
+  )}/api/v1/verify-email/${unhashedToken}`;
   const mailOptions = {
     receiverEmail: user.email,
     subject: `Email Verification - ${process?.env?.WEBSITE_NAME}`,
