@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     await user.createTemporaryToken();
   user.emailVerificationToken = hashedToken;
   user.emailVerificationTokenExpiry = tokenExpiry;
-  await user.save();
+  await user.save({ validateBeforeSave: false });
 
   const verificationLink = `${req.protocol}://${req.get(
     "host"
@@ -58,8 +58,8 @@ const registerUser = asyncHandler(async (req, res) => {
     mailgenContent: emailVerificationContent(user.username, verificationLink),
   };
 
-  const createdUser = User.findById(user._id).select(
-    "-password, -refreshToken, -emailVerificationToken, -emailVerificationTokenExpiry, -resetPasswordToken, -resetPasswordTokenExpiry"
+  const createdUser = await User.findById(user._id).select(
+    "-password -refreshToken -emailVerificationToken -emailVerificationTokenExpiry -resetPasswordToken -resetPasswordTokenExpiry"
   );
   await sendEmail(mailOptions);
   if (!createdUser) {
@@ -71,7 +71,7 @@ const registerUser = asyncHandler(async (req, res) => {
       new ApiResponse(
         201,
         "User registered. An email to verify the email address has been sent to the user",
-        { user }
+        createdUser
       )
     );
 });
